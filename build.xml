@@ -126,7 +126,7 @@
         <fx:csstobin outdir="${artifact.temp.output.JavaFXApp}">
             <fileset dir="${artifact.temp.output.JavaFXApp}" includes="**/*.css"/>
         </fx:csstobin>
-        <fx:jar destfile="${artifact.temp.output.JavaFXApp}/JavaFXApp.jar">
+        <fx:jar destfile="${artifact.temp.output.JavaFXApp}/${jar.name}.jar">
             <fx:application refid="JavaFXApp_id"/>
             <fileset dir="${artifact.temp.output.JavaFXApp}" excludes="**/*.jar"/>
             <fx:resources>

@@ -77,7 +77,7 @@ public class Controller implements Initializable {
                 }
                 br.close();
                 fr.close();
-
+                System.out.println("Считана база данных");
             }
         } catch (FileNotFoundException e) {
             System.out.println("Исходных данных нету");
@@ -104,7 +104,7 @@ public class Controller implements Initializable {
                 if (!file.createNewFile())
                     throw new IOException("Ошибка записи в файл БД");
             }
-            writer = new BufferedWriter(new FileWriter(filename, true));
+            writer = new BufferedWriter(new FileWriter(file,true));
         } catch (IOException e) {
             e.printStackTrace();
         }
