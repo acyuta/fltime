@@ -100,7 +100,8 @@
 
     <target name="init.artifacts">
         <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-        <property name="artifact.output.freelansetimer" value="${basedir}/out/artifacts/FreelanseTimer"/>
+        <property name="program.out.dir" value="${jar.name}-${version}"/>
+        <property name="artifact.output.freelansetimer" value="${basedir}/out/artifacts/${program.out.dir}"/>
         <mkdir dir="${artifacts.temp.dir}"/>
         <property name="artifact.temp.output.JavaFXApp" value="${artifacts.temp.dir}/${jar.name}.jar"/>
         <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant"
@@ -175,7 +176,7 @@
     <target name="build.scripts" description="Make a startup script">
         <echo file="${artifact.output.freelansetimer}/${jar.name}.sh" description="Create start script">#!/bin/bash
 
-    java -jar ./${jar.name}.jar
+java -jar ./${jar.name}.jar
         </echo>
         <echo file="${artifact.output.freelansetimer}/Makefile" description="Create Makefile">DEST=.
 install: ${jar.name}.sh
@@ -185,4 +186,8 @@ install: ${jar.name}.sh
     </target>
 
     <target name="all" depends="build.modules, build.all.artifacts, build.scripts" description="build all"/>
+
+    <target name="pkg" depends="all" description="Make tar.gz pakage">
+        <tar destfile="${program.out.dir}.tar.gz" compression="gzip" basedir="${basedir}/out/artifacts"/>
+    </target>
 </project>
