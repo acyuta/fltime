@@ -1,0 +1,33 @@
+.background {
+    -fx-background-color: linear-gradient(#2C3E50, #34495E);
+}
+
+.clock {
+    -fx-node-vpos: top;
+}
+
+.date {
+    -fx-font-size: 1em;
+    -fx-text-fill: #F39C12;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.redLabel {
+    -fx-cursor: hand;
+    -fx-font-size: 5em;
+    -fx-text-fill: #F39C12;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.startButton {
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#2980B9, #3498DB);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.startButton:hover {
+    -fx-background-color: linear-gradient(#3498DB, #2980B9);
+
+}

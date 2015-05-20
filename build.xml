@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="timer" default="all">
+
+    <property file="build.properties"/>
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="700m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.bundle/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/RCS/**"/>
+        <exclude name="**/SCCS/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/rcs/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.war"/>
+        <include name="*.ear"/>
+        <include name="*.apk"/>
+        <include name="*.zip"/>
+        <include name="*.swc"/>
+        <include name="*.ane"/>
+        <include name="*.egg"/>
+        <include name="*.jar"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+    </patternset>
+
+    <!-- JDK definitions -->
+
+    <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+    <path id="jdk.classpath.1.8">
+        <fileset dir="${jdk.home.1.8}">
+            <include name="jre/lib/charsets.jar"/>
+            <include name="jre/lib/jfxswt.jar"/>
+            <include name="jre/lib/management-agent.jar"/>
+            <include name="jre/lib/jsse.jar"/>
+            <include name="jre/lib/jce.jar"/>
+            <include name="jre/lib/rt.jar"/>
+            <include name="jre/lib/jfr.jar"/>
+            <include name="jre/lib/resources.jar"/>
+            <include name="jre/lib/deploy.jar"/>
+            <include name="jre/lib/plugin.jar"/>
+            <include name="jre/lib/javaws.jar"/>
+            <include name="jre/lib/ext/dnsns.jar"/>
+            <include name="jre/lib/ext/sunpkcs11.jar"/>
+            <include name="jre/lib/ext/sunjce_provider.jar"/>
+            <include name="jre/lib/ext/sunec.jar"/>
+            <include name="jre/lib/ext/nashorn.jar"/>
+            <include name="jre/lib/ext/localedata.jar"/>
+            <include name="jre/lib/ext/jfxrt.jar"/>
+            <include name="jre/lib/ext/cldrdata.jar"/>
+            <include name="jre/lib/ext/zipfs.jar"/>
+        </fileset>
+    </path>
+
+    <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+    <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+    <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+
+    <!-- Modules -->
+
+    <import file="${basedir}/module_timer.xml"/>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.timer, clean.artifact.freelansetimer" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, compile.module.timer" description="build all modules"/>
+
+    <target name="init.artifacts">
+        <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+        <property name="artifact.output.freelansetimer" value="${basedir}/out/artifacts/FreelanseTimer"/>
+        <mkdir dir="${artifacts.temp.dir}"/>
+        <property name="artifact.temp.output.JavaFXApp" value="${artifacts.temp.dir}/${jar.name}.jar"/>
+        <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant"
+                 classpath="${jdk.home.1.8}/lib/ant-javafx.jar"/>
+    </target>
+
+    <target name="clean.artifact.freelansetimer" description="clean FreelanseTimer artifact output">
+        <delete dir="${artifact.output.freelansetimer}"/>
+    </target>
+
+    <target name="artifact.freelansetimer" depends="init.artifacts, compile.module.timer"
+            description="Build &#39;FreelanseTimer&#39; artifact" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+        <mkdir dir="${artifact.output.freelansetimer}"/>
+        <copy todir="${artifact.temp.output.JavaFXApp}">
+            <fileset dir="${timer.output.dir}"/>
+        </copy>
+        <fx:fileset id="all_but_JavaFXApp" dir="${artifact.temp.output.JavaFXApp}" includes="**/*.jar">
+            <exclude name="JavaFXApp.jar"/>
+        </fx:fileset>
+        <fx:fileset id="all_JavaFXApp" dir="${artifact.temp.output.JavaFXApp}" includes="**/*.jar"/>
+        <fx:application id="JavaFXApp_id" name="FreelanseTimer" mainClass="net.acyuta.freelance.Main"/>
+        <fx:csstobin outdir="${artifact.temp.output.JavaFXApp}">
+            <fileset dir="${artifact.temp.output.JavaFXApp}" includes="**/*.css"/>
+        </fx:csstobin>
+        <fx:jar destfile="${artifact.temp.output.JavaFXApp}/JavaFXApp.jar">
+            <fx:application refid="JavaFXApp_id"/>
+            <fileset dir="${artifact.temp.output.JavaFXApp}" excludes="**/*.jar"/>
+            <fx:resources>
+                <fx:fileset refid="all_but_JavaFXApp"/>
+            </fx:resources>
+            <manifest/>
+        </fx:jar>
+        <fx:deploy width="600" height="400" updatemode="background" outdir="${artifact.temp.output.JavaFXApp}/deploy"
+                   outfile="JavaFXApp">
+            <fx:permissions elevated="true"/>
+            <fx:application refid="JavaFXApp_id"/>
+            <fx:info title="Freelance Timer" vendor="acyuta.net"/>
+            <fx:resources>
+                <fx:fileset refid="all_JavaFXApp"/>
+            </fx:resources>
+        </fx:deploy>
+        <property name="artifact.sign.vendor.JavaFXApp" value="CN=acyuta.net"/>
+        <property name="artifact.sign.alias.JavaFXApp" value="jb"/>
+        <property name="artifact.sign.keystore.JavaFXApp" value="${artifact.temp.output.JavaFXApp}/jb-key.jks"/>
+        <property name="artifact.sign.storepass.JavaFXApp" value="storepass"/>
+        <property name="artifact.sign.keypass.JavaFXApp" value="keypass"/>
+        <genkey dname="${artifact.sign.vendor.JavaFXApp}" alias="${artifact.sign.alias.JavaFXApp}"
+                keystore="${artifact.sign.keystore.JavaFXApp}" storepass="${artifact.sign.storepass.JavaFXApp}"
+                keypass="${artifact.sign.keypass.JavaFXApp}"/>
+        <signjar alias="${artifact.sign.alias.JavaFXApp}" keystore="${artifact.sign.keystore.JavaFXApp}"
+                 storepass="${artifact.sign.storepass.JavaFXApp}" keypass="${artifact.sign.keypass.JavaFXApp}">
+            <fileset dir="${artifact.temp.output.JavaFXApp}/deploy">
+                <include name="*.jar"/>
+            </fileset>
+        </signjar>
+        <copy todir="${artifact.output.freelansetimer}">
+            <fileset dir="${artifact.temp.output.JavaFXApp}/deploy"/>
+        </copy>
+        <delete includeemptydirs="true">
+            <fileset dir="${artifact.temp.output.JavaFXApp}"/>
+        </delete>
+    </target>
+
+    <target name="build.all.artifacts" depends="artifact.freelansetimer" description="Build all artifacts">
+
+        <!-- Delete temporary files -->
+        <delete dir="${artifacts.temp.dir}"/>
+    </target>
+
+    <!-- Prepare start script file -->
+
+    <target name="build.scripts" description="Make a startup script">
+        <echo file="${artifact.output.freelansetimer}/${jar.name}.sh" description="Create start script">#!/bin/bash
+
+    java -jar ./${jar.name}.jar
+        </echo>
+        <echo file="${artifact.output.freelansetimer}/Makefile" description="Create Makefile">DEST=.
+install: ${jar.name}.sh
+    ln -s ${jar.name}.sh $(DEST)/${jar.name}
+        </echo>
+
+    </target>
+
+    <target name="all" depends="build.modules, build.all.artifacts, build.scripts" description="build all"/>
+</project>
