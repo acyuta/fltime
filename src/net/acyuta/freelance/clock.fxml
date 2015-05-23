@@ -7,34 +7,41 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import net.acyuta.freelance.NumericTextField?>
 <BorderPane fx:controller="net.acyuta.freelance.Controller"
             xmlns:fx="http://javafx.com/fxml" styleClass="background">
 
-    <top>
+    <center>
         <VBox alignment="TOP_CENTER">
-            <HBox  alignment="TOP_CENTER" styleClass="clock">
+            <HBox alignment="TOP_CENTER" styleClass="clock">
                 <Label fx:id="hours" styleClass="redLabel"/>
                 <Label text=":" styleClass="redLabel"/>
                 <Label fx:id="minutes" styleClass="redLabel"/>
                 <Label text=":" styleClass="redLabel"/>
                 <Label fx:id="seconds" styleClass="redLabel"/>
             </HBox>
+            <FlowPane alignment="CENTER">
+                <Button text="Начать работу" styleClass="startButton"
+                        fx:id="actionButton" onAction="#changeTimer" alignment="BASELINE_CENTER"/>
+            </FlowPane>
+            <Label text="В неделе: " styleClass="date"/>
+            <Label fx:id="weekTime" styleClass="date"/>
+            <Label text="Заработано: " styleClass="date"/>
+            <Label fx:id="salary" styleClass="date"/>
+            <VBox alignment="BOTTOM_CENTER" fx:id="ratesBox">
+                <Label text="Ставка: " styleClass="info-text"/>
+                <VBox alignment="CENTER">
+                    <NumericTextField fx:id="rates" maxWidth="130"/>
+                    <Label text=" денег/час" styleClass="date"/>
+                </VBox>
+
+            </VBox>
         </VBox>
-    </top>
-    <center>
-        <Button text="Начать работу" styleClass="startButton"
-                fx:id="actionButton" onAction="#changeTimer" alignment="BASELINE_CENTER"/>
     </center>
-    <bottom>
-        <BorderPane>
-            <left>
-                <Label text="Hi!" styleClass="info-text"/>
-            </left>
-            <right>
-                <Label onMouseClicked="#endWork" styleClass="endLabel" text="Закончить работу"/>
-            </right>
-        </BorderPane>
-    </bottom>
+    <top>
+
+    </top>
     <stylesheets>
         <URL value="@clock.css"/>
     </stylesheets>

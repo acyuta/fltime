@@ -22,7 +22,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("clock.fxml"));
         primaryStage.setTitle("Фрилансера время");
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 350, 350);
 
         primaryStage.setScene(scene);
         primaryStage.show();

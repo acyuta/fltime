@@ -5,9 +5,17 @@
 .clock {
     -fx-node-vpos: top;
 }
+.button {
+    -fx-margin: 2em;
+}
+.info-text {
+    -fx-font-size: 2em;
+        -fx-text-fill: #F39C12;
+        -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
 
 .date {
-    -fx-font-size: 1em;
+    -fx-font-size: 1.5em;
     -fx-text-fill: #F39C12;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
@@ -20,6 +28,8 @@
 }
 
 .startButton {
+    -fx-padding: 2em;
+    -fx-margin: 20px;
     -fx-text-fill: white;
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-weight: bold;
