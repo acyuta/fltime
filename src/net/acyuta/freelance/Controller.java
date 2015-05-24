@@ -44,6 +44,8 @@ public class Controller implements Initializable {
     public NumericTextField rates;
     @FXML
     public VBox ratesBox;
+    @FXML
+    public Button exitButton;
     private boolean start = false;
     private BufferedWriter writer;
     private int autoSaveSecond = 10 * 60;
@@ -144,11 +146,6 @@ public class Controller implements Initializable {
         }
     }
 
-
-    public void endWork(Event event) {
-        writeResult();
-    }
-
     private void writeResult() {
         LocalDate dateTime = LocalDate.now();
         String result = dateTime.toString() + ';' + clock.toString() + ";";
@@ -175,7 +172,6 @@ public class Controller implements Initializable {
 
         LocalDate now = LocalDate.now();
         weekMap = makeWeekMap(weekMap, now);
-
         int seconds = 0;
 
         for (String v : values) {
@@ -199,13 +195,19 @@ public class Controller implements Initializable {
     }
 
     private HashMap<String, Long> makeWeekMap(HashMap<String, Long> weekMap, LocalDate today) {
-        LocalDate it = LocalDate.from(today);
+        LocalDate it = LocalDate.from(today.minusDays(1));
         if (today.getDayOfWeek().getValue() == 1)
             return weekMap;
-        for (int i = today.minusWeeks(1).getDayOfWeek().getValue(); i >= 1; i--) {
+        for (int i = today.minusDays(1).getDayOfWeek().getValue(); i >= 1; i--) {
             weekMap.put(it.toString(), (long) 0);
             it = it.minusDays(1);
         }
         return weekMap;
+    }
+
+    @FXML
+    public void exitAction(ActionEvent actionEvent) {
+        this.writeResult();
+        System.exit(0);
     }
 }
